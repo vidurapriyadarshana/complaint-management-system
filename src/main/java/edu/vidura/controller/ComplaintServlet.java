@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/employee/dashboard")
+@WebServlet("/complaint")
 public class ComplaintServlet extends HttpServlet {
 
     @Override
@@ -52,16 +52,29 @@ public class ComplaintServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Integer userId = (Integer) req.getSession().getAttribute("userId");
+        String role = (String) req.getSession().getAttribute("role");
 
         if (userId == null) {
             resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
 
-        ComplaintDAO complaintDAO = new ComplaintDAO(getServletContext());
-        List<Complaint> complaints = complaintDAO.findByUserId(userId);
+        if ("EMPLOYEE".equalsIgnoreCase(role)) {
+            ComplaintDAO complaintDAO = new ComplaintDAO(getServletContext());
+            List<Complaint> complaints = complaintDAO.findByUserId(userId);
 
-        req.setAttribute("complaints", complaints);
-        req.getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(req, resp);
+            req.setAttribute("complaints", complaints);
+            req.getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(req, resp);
+//            resp.sendRedirect(req.getContextPath() + "/admin");
+        } else if ("ADMIN".equalsIgnoreCase(role)) {
+            resp.sendRedirect(req.getContextPath() + "/admin");
+        }
+
+
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doDelete(req, resp);
     }
 }

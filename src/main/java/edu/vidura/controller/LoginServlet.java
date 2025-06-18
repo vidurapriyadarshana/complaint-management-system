@@ -38,9 +38,9 @@ public class LoginServlet extends HttpServlet {
             session.setMaxInactiveInterval(30 * 60);
 
             if ("ADMIN".equalsIgnoreCase(user.getRole())) {
-                resp.sendRedirect(req.getContextPath() + "/admin");
+                resp.sendRedirect(req.getContextPath() + "/complaint");
             } else if ("EMPLOYEE".equalsIgnoreCase(user.getRole())) {
-                resp.sendRedirect(req.getContextPath() + "/employee/dashboard");
+                resp.sendRedirect(req.getContextPath() + "/complaint");
             } else {
                 req.setAttribute("errorMessage", "Unauthorized role.");
                 req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
