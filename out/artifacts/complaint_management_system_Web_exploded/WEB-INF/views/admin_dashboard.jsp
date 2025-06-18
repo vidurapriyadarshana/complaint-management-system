@@ -16,11 +16,11 @@
     }
 %>
 <html>
-<head>
-    <title>Admin Dashboard</title>
-</head>
-<body>
-<h1>Welcome, Admin <%= username %>!</h1>
-<a href="<%= request.getContextPath() %>/api/v1/logout">Logout</a>
-</body>
+    <head>
+        <title>Admin Dashboard</title>
+    </head>
+    <body>
+        <h1>Welcome, Admin <%= username %>!</h1>
+        <a href="<%= request.getContextPath() %>/logout">Logout</a>
+    </body>
 </html>
