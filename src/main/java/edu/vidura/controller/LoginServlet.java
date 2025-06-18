@@ -1,9 +1,7 @@
 package edu.vidura.controller;
 
-
 import edu.vidura.model.bean.User;
 import edu.vidura.model.dao.UserDAO;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,7 +24,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
@@ -36,21 +34,20 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = req.getSession();
             session.setAttribute("user", user.getUsername());
             session.setAttribute("role", user.getRole());
+            session.setAttribute("userId", user.getId());
             session.setMaxInactiveInterval(30 * 60);
 
-            RequestDispatcher rd;
             if ("ADMIN".equalsIgnoreCase(user.getRole())) {
-                rd = req.getRequestDispatcher("/WEB-INF/views/admin_dashboard.jsp");
+                resp.sendRedirect(req.getContextPath() + "/admin");
             } else if ("EMPLOYEE".equalsIgnoreCase(user.getRole())) {
-                rd = req.getRequestDispatcher("/WEB-INF/views/dashboard.jsp");
+                resp.sendRedirect(req.getContextPath() + "/employee/dashboard");
             } else {
                 req.setAttribute("errorMessage", "Unauthorized role.");
-                rd = req.getRequestDispatcher("/WEB-INF/views/login.jsp");
+                req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
             }
-            rd.forward(req, resp);
         } else {
             req.setAttribute("errorMessage", "Invalid username or password.");
-            req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/login");
         }
     }
 
