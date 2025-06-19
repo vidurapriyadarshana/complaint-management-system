@@ -46,7 +46,7 @@ public class ComplaintServlet extends HttpServlet {
             req.setAttribute("errorMessage", "Failed to submit complaint.");
         }
 
-        resp.sendRedirect(req.getContextPath() + "/employee/dashboard");
+        resp.sendRedirect(req.getContextPath() + "/complaint");
     }
 
     @Override
@@ -71,10 +71,5 @@ public class ComplaintServlet extends HttpServlet {
         }
 
 
-    }
-
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
     }
 }

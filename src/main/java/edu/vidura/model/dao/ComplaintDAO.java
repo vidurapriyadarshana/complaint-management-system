@@ -61,6 +61,44 @@ public class ComplaintDAO {
         }
     }
 
+    public boolean deleteComplaint(int id) {
+        String sql = "DELETE FROM complaints WHERE id = ?";
+        try (Connection conn = ds.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            int rows = stmt.executeUpdate();
+            return rows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
+    public boolean update(Complaint complaint) {
+        String sql = "UPDATE complaints SET title = ?, description = ? WHERE id = ?";
+
+        try (Connection conn = ds.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, complaint.getTitle().trim());
+            stmt.setString(2, complaint.getDescription().trim());
+            stmt.setInt(3, complaint.getId());
+
+            int rows = stmt.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Successfully updated: " + complaint.getId());
+                return true;
+            } else {
+                System.err.println("ID: " + complaint.getId());
+                return false;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error updating: " + complaint.getId());
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }
