@@ -101,4 +101,55 @@ public class ComplaintDAO {
         }
     }
 
+    public List<Complaint> findAll() {
+        List<Complaint> list = new ArrayList<>();
+        String sql = "SELECT * FROM complaints";
+
+        try (Connection conn = ds.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Complaint c = new Complaint();
+                c.setId(rs.getInt("id"));
+                c.setUserId(rs.getInt("user_id"));
+                c.setTitle(rs.getString("title"));
+                c.setDescription(rs.getString("description"));
+                c.setStatus(rs.getString("status"));
+                c.setRemarks(rs.getString("remarks"));
+                list.add(c);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public boolean updateStatus(Complaint complaint) {
+        String sql = "UPDATE complaints SET status = ?, remarks = ? WHERE id = ?";
+
+        try (Connection conn = ds.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, complaint.getStatus().trim());
+            stmt.setString(2, complaint.getRemarks().trim());
+            stmt.setInt(3, complaint.getId());
+
+            int rows = stmt.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Successfully updated: " + complaint.getId());
+                return true;
+            } else {
+                System.err.println("ID: " + complaint.getId());
+                return false;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error updating: " + complaint.getId());
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

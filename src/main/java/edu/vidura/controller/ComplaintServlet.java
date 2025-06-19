@@ -67,7 +67,12 @@ public class ComplaintServlet extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(req, resp);
 //            resp.sendRedirect(req.getContextPath() + "/admin");
         } else if ("ADMIN".equalsIgnoreCase(role)) {
-            resp.sendRedirect(req.getContextPath() + "/admin");
+            ComplaintDAO complaintDAO = new ComplaintDAO(getServletContext());
+            List<Complaint> complaints = complaintDAO.findAll();
+
+            req.setAttribute("complaints", complaints);
+            req.getRequestDispatcher("WEB-INF/views/admin_dashboard.jsp").forward(req, resp);
+//            resp.sendRedirect(req.getContextPath() + "/admin");
         }
 
 

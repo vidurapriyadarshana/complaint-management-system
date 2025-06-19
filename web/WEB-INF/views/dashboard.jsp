@@ -5,7 +5,6 @@
     List<Complaint> complaints = (List<Complaint>) request.getAttribute("complaints");
     String username = (String) session.getAttribute("user");
 
-    // Check if we're editing a complaint
     String editId = request.getParameter("editId");
     Complaint editComplaint = null;
     if (editId != null && complaints != null) {
@@ -68,7 +67,6 @@
             background-color: #003060;
         }
 
-        /* Update button styling */
         form input[type="submit"].update-btn {
             background-color: #008000;
         }
@@ -77,7 +75,6 @@
             background-color: #006600;
         }
 
-        /* Cancel button styling */
         .cancel-btn {
             background-color: #808080;
             color: white;
@@ -161,7 +158,6 @@
             background-color: #CC0000;
         }
 
-        /* Disabled button styling */
         .edit-link.disabled,
         .delete-link.disabled {
             background-color: #CCCCCC;
